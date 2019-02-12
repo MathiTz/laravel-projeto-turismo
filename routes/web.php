@@ -14,7 +14,14 @@
 $this->group(['prefix'=>'panel', 'namespace' => 'Panel'], function(){
     $this->any('brands/search', 'BrandController@search')
         ->name('brands.search');
+    $this->get('brands/{id}/planes', 'BrandController@planes')
+        ->name('brands.planes');
     $this->resource('brands', 'BrandController');
+
+    $this->any('planes/search', 'PlaneController@search')
+        ->name('planes.search');
+    $this->resource('planes', 'PlaneController');
+
     $this->get('/', 'PanelController@index')
         ->name('panel');
 });
@@ -22,7 +29,8 @@ $this->group(['prefix'=>'panel', 'namespace' => 'Panel'], function(){
 
 
 
-$this->get('promocoes', 'Site\SiteController@promotions')->name('promotions');
+$this->get('promocoes', 'Site\SiteController@promotions')
+    ->name('promotions');
 $this->get('/', 'Site\SiteController@index');
 
 Auth::routes();

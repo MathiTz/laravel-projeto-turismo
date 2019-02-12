@@ -51,6 +51,14 @@
                     Brands
                 </a>
             </li>
+
+            <li>
+                <a href="{{route('planes.index')}}">
+                    <i class="fa fa-plane"
+                       aria-hidden="true"></i>
+                    Planes
+                </a>
+            </li>
         </ul>
     </div>
 

@@ -14,4 +14,9 @@ class Brand extends Model
             ->where('name', 'LIKE', "%{$keySearch}%")
             ->paginate($totalPage);
     }
+
+    public function planes()
+    {
+        return $this->hasMany(Plane::class);
+    }
 }
