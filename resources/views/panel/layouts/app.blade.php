@@ -59,6 +59,14 @@
                     Planes
                 </a>
             </li>
+
+            <li>
+                <a href="{{route('states.index')}}">
+                    <i class="fa fa-globe"
+                       aria-hidden="true"></i>
+                    States
+                </a>
+            </li>
         </ul>
     </div>
 
