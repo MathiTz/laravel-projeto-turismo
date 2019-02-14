@@ -35,6 +35,8 @@ $this->group(['prefix'=>'panel', 'namespace' => 'Panel'], function(){
     $this->get('state/{initials}/cities', 'CityController@index')
         ->name('state.cities');
 
+    $this->resource('flights', 'FlightController');
+
     $this->get('/', 'PanelController@index')
         ->name('panel');
 });

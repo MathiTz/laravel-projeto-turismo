@@ -4,28 +4,17 @@
 
     <div class="bred">
         <a href="{{route('panel')}}" class="bred">Home ></a>
-        <a href="{{route('states.index')}}" class="bred">Estados ></a>
-        <a href="{{route('state.cities', $state->initials)}}"
-           class="bred">
-            {{$state->name}}
-        </a>
+        <a href="" class="bred">Flights</a>
     </div>
 
     <div class="title-pg">
-        <h1 class="title-pg">
-            Cidades do Estado
-            ({{$cities->count()}} - {{$cities->total()}}):
-            <strong>
-                {{$state->name}}
-            </strong>
-        </h1>
+        <h1 class="title-pg">Voos</h1>
     </div>
 
     <div class="content-din bg-white">
 
         <div class="form-search">
-            {{ Form::open(['route' => ['state.cities.search',
-                           $state->initials],
+            {{ Form::open(['route' => 'brands.search',
                            'class' => 'form form-inline']) }}
             {{ Form::text('key_search', null, [
             'class' => 'form-control',
@@ -37,7 +26,7 @@
             @if(isset($dataForm['key_search']))
                 <div class="alert alert-info">
                     <p>
-                        <a href="">
+                        <a href="{{route('flights.index')}}">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                         </a>
                         Resultados para:
@@ -55,17 +44,37 @@
             @include('panel.includes.alerts')
         </div>
 
+        <div class="class-btn-insert">
+            <a href="{{route('flights.create')}}" class="btn-insert">
+                <span class="glyphicon glyphicon-plus"></span>
+                Cadastrar
+            </a>
+        </div>
+
         <table class="table table-striped">
             <tr>
-                <th>Nome</th>
+                <th>#</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>Paradas</th>
+                <th>Data</th>
+                <th>Saida</th>
                 <th width="180px">Ações</th>
             </tr>
 
-            @forelse($cities as $city)
+            @forelse($flights as $flight)
                 <tr>
-                    <td>{{$city->name}}</td>
+                    <td>{{$flight->id}}</td>
+                    <td>{{$flight->airport_origin_id}}</td>
+                    <td>{{$flight->airport_destination_id}}</td>
+                    <td>{{$flight->qty_stops}}</td>
+                    <td>{{$flight->date}}</td>
+                    <td>{{$flight->hour_output}}</td>
                     <td>
-                        #ações
+                        <a href="{{route('brands.edit', $flight->id)}}"
+                           class="edit">Edit</a>
+                        <a href="{{route('brands.show', $flight->id)}}"
+                           class="delete">View</a>
                     </td>
                 </tr>
             @empty
@@ -76,9 +85,9 @@
         </table>
 
         @if(isset($dataForm))
-            {{$cities->appends($dataForm)->links()}}
+            {{ $flights->appends($dataForm)->links() }}
         @else
-            {{$cities->links()}}
+            {{ $flights->links() }}
         @endif
 
     </div><!--Content Dinâmico-->
