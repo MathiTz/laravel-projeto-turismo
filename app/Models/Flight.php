@@ -20,15 +20,38 @@ class Flight extends Model
         'is_promotion',
         'image',
         'qty_stops',
-        'description'
+        'description',
     ];
 
     public function newFlight($request)
     {
         $data = $request->all();
         $data['airport_origin_id'] = $request->origin;
-        $data['airport_destination_id'] = $request->Destination;
-        dd($data);
-        return $this->create([$data]);
+        $data['airport_destination_id'] = $request->destination;
+
+        return $this->create($data);
+    }
+
+    public function updateFlight($request)
+    {
+        $data = $request->all();
+        $data['airport_origin_id'] = $request->origin;
+        $data['airport_destination_id'] = $request->destination;
+
+        return $this->update($data);
+    }
+
+    public function origin()
+    {
+        return $this
+            ->belongsTo(Airport::class,
+                'airport_origin_id');
+    }
+
+    public function destination()
+    {
+        return $this
+            ->belongsTo(Airport::class,
+                'airport_destination_id');
     }
 }

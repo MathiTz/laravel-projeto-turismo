@@ -27,7 +27,10 @@ class FlightController extends Controller
     {
         $title = "Voo disponiveis";
 
-        $flights = $this->flight->paginate($this->totalPage);
+        $flights = $this->flight
+            ->with(['origin',
+                    'destination'])
+            ->paginate($this->totalPage);
 
         return view('panel.flights.index',
                     compact('title'
@@ -90,7 +93,18 @@ class FlightController extends Controller
      */
     public function edit($id)
     {
-        //
+        $flight = $this->flight->find($id);
+        if(!$flight)
+            return redirect()->back();
+
+        $title = "Editar Voo {$flight->id}";
+
+        $planes = Plane::pluck('id', 'id');
+        $airports = Airport::pluck('name', 'id');
+
+        return view('panel.flights.edit',
+            compact('title', 'flight',
+                'planes', 'airports'));
     }
 
     /**
@@ -102,7 +116,21 @@ class FlightController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $flight = $this->flight->find($id);
+        if(!$flight)
+            return redirect()->back();
+
+        $update = $flight->updateFlight($request);
+
+        if($update)
+            return redirect()
+                ->route('flights.index')
+                ->with('success', 'Sucesso ao atualizar');
+        else
+            return redirect()
+                ->back()
+                ->with('error', 'Falha ao atualizar')
+                ->withInput();
     }
 
     /**
