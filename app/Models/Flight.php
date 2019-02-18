@@ -23,11 +23,12 @@ class Flight extends Model
         'description',
     ];
 
-    public function newFlight($request)
+    public function newFlight($request, $nameFile = '')
     {
         $data = $request->all();
         $data['airport_origin_id'] = $request->origin;
         $data['airport_destination_id'] = $request->destination;
+        $data['image'] = $nameFile;
 
         return $this->create($data);
     }
@@ -37,6 +38,7 @@ class Flight extends Model
         $data = $request->all();
         $data['airport_origin_id'] = $request->origin;
         $data['airport_destination_id'] = $request->destination;
+
 
         return $this->update($data);
     }
@@ -54,4 +56,9 @@ class Flight extends Model
             ->belongsTo(Airport::class,
                 'airport_destination_id');
     }
+
+//    public function getDateAttribute($value)
+//    {
+//        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+//    }
 }

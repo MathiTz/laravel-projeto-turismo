@@ -27,7 +27,9 @@
                 <div class="alert alert-info">
                     <p>
                         <a href="{{route('flights.index')}}">
-                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                            <i class="fa fa-refresh"
+                               aria-hidden="true">
+                            </i>
                         </a>
                         Resultados para:
                         <strong>
@@ -45,7 +47,8 @@
         </div>
 
         <div class="class-btn-insert">
-            <a href="{{route('flights.create')}}" class="btn-insert">
+            <a href="{{route('flights.create')}}"
+               class="btn-insert">
                 <span class="glyphicon glyphicon-plus"></span>
                 Cadastrar
             </a>
@@ -54,6 +57,7 @@
         <table class="table table-striped">
             <tr>
                 <th>#</th>
+                <th>Imagem</th>
                 <th>Origem</th>
                 <th>Destino</th>
                 <th>Paradas</th>
@@ -65,16 +69,31 @@
             @forelse($flights as $flight)
                 <tr>
                     <td>{{$flight->id}}</td>
+                    <td>
+                    @if($flight->image)
+                        <img src="{{url("storage/flights/{$flight->image}")}}"
+                             alt="{{$flight->id}}"
+                             style="max-width: 100px;">
+                    @endif
+                    </td>
                     <td>{{$flight->origin->name}}</td>
                     <td>{{$flight->destination->name}}</td>
                     <td>{{$flight->qty_stops}}</td>
-                    <td>{{$flight->date}}</td>
-                    <td>{{$flight->hour_output}}</td>
+                    <td>
+                        {{formatDateAndTime($flight->date)}}
+                    </td>
+                    <td>
+                        {{formatDateAndTime($flight->hour_output, 'H:i')}}
+                    </td>
                     <td>
                         <a href="{{route('flights.edit', $flight->id)}}"
-                           class="edit">Edit</a>
+                           class="edit">
+                            Edit
+                        </a>
                         <a href="{{route('flights.show', $flight->id)}}"
-                           class="delete">View</a>
+                           class="delete">
+                            View
+                        </a>
                     </td>
                 </tr>
             @empty
