@@ -14,32 +14,70 @@
     <div class="content-din bg-white">
 
         <div class="form-search">
-            {{ Form::open(['route' => 'brands.search',
-                           'class' => 'form form-inline']) }}
-            {{ Form::text('key_search', null, [
+            {!! Form::open(['route' => 'flights.search',
+                           'class' => 'form form-inline'])  !!}
+            {{ Form::number('code', null, [
             'class' => 'form-control',
-            'placeholder' => 'Pesquisar']) }}
+            'placeholder' => 'Código do Vôo']) }}
+            {{ Form::date('date', null, [
+            'class' => 'form-control']) }}
+            {{ Form::time('hour_output', null, [
+            'class' => 'form-control']) }}
+            {{ Form::number('total_stops', null, [
+            'class' => 'form-control',
+            'placeholder' => 'Total Paradas']) }}
+
+            {!! Form::select('origin', $airports, null,[
+            'class' => 'form-control']) !!}
+            {!! Form::select('destination', $airports, null,[
+            'class' => 'form-control']) !!}
 
             <button class="btn btn-search">Pesquisar</button>
-            {{ Form::close() }}
+            {!! Form::close() !!}
 
-            @if(isset($dataForm['key_search']))
+            @if(isset($dataForm))
                 <div class="alert alert-info">
                     <p>
-                        <a href="{{route('flights.index')}}">
-                            <i class="fa fa-refresh"
-                               aria-hidden="true">
-                            </i>
-                        </a>
-                        Resultados para:
+                    <a href="{{route('flights.index')}}">
+                        <i class="fa fa-refresh"
+                           aria-hidden="true">
+                        </i>
+                    </a>
+                    @if(isset($dataForm['code']))
+                        <p>
+                            Código:
+                            <strong>
+                                {{ $dataForm['code'] }}
+                            </strong>
+                        </p>
+                    @endif
+                    @if(isset($dataForm['date']))
+                        <p>
+                        Data:
                         <strong>
-                            {{$dataForm['key_search']}}
+                            {{formatDateAndTime($dataForm['date'])}}
                         </strong>
+                        </p>
+                    @endif
+                    @if(isset($dataForm['hour_output']))
+                        <p>
+                            Hora da Saída:
+                            <strong>
+                                {{ $dataForm['hour_output'] }}
+                            </strong>
+                        </p>
+                    @endif
+                    @if(isset($dataForm['total_stops']))
+                        <p>
+                            Total de Paradas:
+                            <strong>
+                                {{ $dataForm['total_stops'] }}
+                            </strong>
+                        </p>
+                    @endif
                     </p>
                 </div>
-
             @endif
-
         </div>
 
         <div class="messages">

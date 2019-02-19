@@ -7,6 +7,7 @@ use App\Models\Flight;
 use App\Models\Plane;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateFlightFormRequest;
 
 class FlightController extends Controller
 {
@@ -32,9 +33,12 @@ class FlightController extends Controller
                     'destination'])
             ->paginate($this->totalPage);
 
+        $airports = Airport::pluck('name','id');
+
         return view('panel.flights.index',
                     compact('title'
-                                ,'flights'));
+                                ,'flights',
+                                    'airports'));
     }
 
     /**
@@ -61,7 +65,7 @@ class FlightController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUpdateFlightFormRequest $request)
     {
         $nameFile = '';
 
@@ -142,13 +146,37 @@ class FlightController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUpdateFlightFormRequest $request, $id)
     {
         $flight = $this->flight->find($id);
         if(!$flight)
             return redirect()->back();
+            $nameFile = $flight->image;
 
-        $update = $flight->updateFlight($request);
+        if($request->hasFile('image')
+            &&
+            $request->file('image')->isValid())
+        {
+            if($flight->image){
+                $nameFile = $flight->image;
+            }
+            else
+            {
+
+            $nameFile = uniqid(date('HisYmd')).'.'.
+                $request->image->extension();
+
+            }
+
+            if(!$request->image->storeAs('flights', $nameFile)){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Falha ao fazer upload')
+                    ->withInput();
+            }
+        }
+
+        $update = $flight->updateFlight($request, $nameFile);
 
         if($update)
             return redirect()
@@ -175,5 +203,24 @@ class FlightController extends Controller
             ->route('flights.index')
             ->with('success', 'Sucesso ao deletar');
 
+    }
+
+    public function search(Request $request)
+    {
+        $flights = $this
+            ->flight
+            ->search($request, $this->totalPage);
+
+        $dataForm = $request->except('_token');
+
+        $airports = Airport::pluck('name','id');
+
+        $title = 'Resultados dos voos pesquisados';
+
+        return view('panel.flights',
+            compact('flights',
+                'title',
+                    'dataForm',
+                    'airports'));
     }
 }

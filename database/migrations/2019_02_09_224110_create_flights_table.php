@@ -18,9 +18,9 @@ class CreateFlightsTable extends Migration
             $table->integer('plane_id')->unsigned();
             $table->integer('airport_origin_id')->unsigned();
             $table->integer('airport_destination_id')->unsigned();
-            $table->date('date');
-            $table->time('time_duration');
-            $table->time('hour_output');
+            $table->date('date')->nullable();
+            $table->time('time_duration')->nullable();
+            $table->time('hour_output')->nullable();
             $table->time('arrival_time');
             $table->double('old_price', 10, 2);
             $table->double('price', 10, 2);

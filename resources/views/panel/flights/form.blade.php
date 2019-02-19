@@ -8,14 +8,14 @@
 
 <div class="form-group">
     <label for="airport_origin_id">Origem</label>
-    {!! Form::select('origin',
+    {!! Form::select('airport_origin_id',
      $airports, null,
       ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
     <label for="airport_destination_id">Destino</label>
-    {!! Form::select('destination',
+    {!! Form::select('airport_destination_id',
      $airports, null,
       ['class' => 'form-control']) !!}
 </div>
@@ -71,7 +71,7 @@
 
 <div class="form-group">
     {!! Form::checkbox('is_promotion',
-     null, null,
+     true, null,
       ['id' => 'is_promotion']) !!}
     <label for="price">É promoção?</label>
 </div>
