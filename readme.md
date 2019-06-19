@@ -11,3 +11,5 @@
 <h2>Tudo isso usando boa prática na hora de fazer relacionamentos no banco</h2>
 
 ## Para iniciar, cria um DB, faça a configuração do arquivo ".env" rode os seguintes comandos: composer update / php artisan key:generate / php artisan migrate e após, isso pode rodar a aplicação com php artisan serve
+
+Use "/panel" para acessar o portal admin
